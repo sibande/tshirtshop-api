@@ -1,5 +1,8 @@
 # Source https://github.com/github/gitignore
 
+*~
+\#*\#
+
 # Logs
 logs
 *.log

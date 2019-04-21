@@ -1,8 +1,11 @@
 var createError = require('http-errors');
 var express = require('express');
+var bodyParser = require('body-parser');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
+require('dotenv').config()
 
 var categoriesRouter = require('./routes/categories');
 var departmentsRouter = require('./routes/departments');
@@ -13,12 +16,17 @@ var ordersRouter = require('./routes/orders');
 var shoppingcartRouter = require('./routes/shoppingcart');
 var shippingRouter = require('./routes/shipping');
 var stripeRouter = require('./routes/stripe');
+var taxRouter = require('./routes/tax');
 
 var app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'twig');
+
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+// // https://stackoverflow.com/a/12008719
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -35,6 +43,7 @@ app.use('/orders', ordersRouter);
 app.use('/shoppingcart', shoppingcartRouter);
 app.use('/shipping', shippingRouter);
 app.use('/stripe', stripeRouter);
+app.use('/tax', taxRouter);
 
 
 // catch 404 and forward to error handler

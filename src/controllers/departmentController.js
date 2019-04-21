@@ -1,11 +1,16 @@
+var Department = require('../db/models/department');
 
 
 /* Get Departments */
-exports.getDepartments = function(req, res) {
-  res.render('index', { title: 'Get Departments' });
+exports.getDepartmentList = function(req, res) {
+  Department.getDepartmentList().then(function(data) {
+    res.json(data);
+  });
 };
 
 /* Get Department by ID */
 exports.getDepartmentById = function(req, res) {
-  res.render('index', { title: 'Get Department by ID' });
+  Department.getDepartmentById(req.params.departmentId).then(function(data) {
+    res.json(data);
+  });
 };

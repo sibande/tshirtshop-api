@@ -5,7 +5,7 @@ var departmentController = require('../controllers/departmentController');
 
 
 /* Get Departments */
-router.get('/', departmentController.getDepartments);
+router.get('/', departmentController.getDepartmentList);
 
 /* Get Department by ID */
 router.get('/:departmentId([0-9]+)', departmentController.getDepartmentById);

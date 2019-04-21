@@ -1,11 +1,16 @@
+var Shipping = require('../db/models/shipping');
 
 
 /* Return shippings regions */
 exports.getShippingRegions = function(req, res) {
-  res.render('index', { title: 'Return shippings regions' });
+  Shipping.getShippingRegions().then(function(data) {
+    res.json(data);
+  });
 };
 
 /* Return shippings regions */
 exports.getShippingRegionById = function(req, res) {
-  res.render('index', { title: 'Return shippings regions' });
+  Shipping.getShippingRegionById(req.params.shippingRegionId).then(function(data) {
+    res.json(data);
+  });
 };

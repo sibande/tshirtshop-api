@@ -1,18 +1,32 @@
+var Category = require('../db/models/category');
 
 
-
+/* Get Categories */
 exports.getCategoryList = function(req, res) {
-  res.render('index', { title: 'Get Categories.' });
+  Category.getCategoryList().then(function(data) {
+    res.json(data);
+  });
+
 };
 
+/* Get Category by ID */
 exports.getCategoryById = function(req, res) {
-  res.render('index', { title: 'Get Category by ID.' });
+  Category.getCategoryById(req.params.categoryId).then(function(data) {
+    res.json(data);
+  });
+
 };
 
+/* Get Categories of a Product */
 exports.getProductCategories = function(req, res) {
-  res.render('index', { title: 'Get Categories of a Product' });
+  Category.getProductCategories(req.params.productId).then(function(data) {
+    res.json(data);
+  });
 };
 
+/* Get Categories of a Department */
 exports.getDepartmentCategories = function(req, res) {
-  res.render('index', { title: 'Get Categories of a Department' });
+  Category.getDepartmentCategories(req.params.departmentId).then(function(data) {
+    res.json(data);
+  });
 };

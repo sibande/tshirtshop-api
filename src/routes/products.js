@@ -29,9 +29,7 @@ router.get('/:productId([0-9]+)/locations', productController.getProductLocation
 router.get('/:productId([0-9]+)/reviews', productController.getProductReviews);
 
 /* Add Product Review */
-router.post('/:productId([0-9]+)/reviews', function(req, res, next) {
-  res.render('index', { title: 'Add Product Review' });
-});
+router.post('/:productId([0-9]+)/reviews', productController.addProductReviews);
 
 
 module.exports = router;

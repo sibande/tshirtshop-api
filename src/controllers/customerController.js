@@ -1,4 +1,4 @@
-
+var Customer = require('../db/models/customer');
 
 /* Update a customer */
 exports.updateCustomer = function(req, res) {
@@ -12,12 +12,17 @@ exports.getCustomer = function(req, res) {
 
 /* Register a Customer */
 exports.registerCustomer = function(req, res) {
-  res.render('index', { title: 'Register a Customer' });
+  Customer.registerCustomer(
+    req.body.name, req.body.email, req.body.password).then(function(data) {
+      res.json(data);
+    });
 };
 
 /* Sign in in the Shopping. */
 exports.loginCustomer = function(req, res) {
-  res.render('index', { title: 'Sign in in the Shopping.' });
+  Customer.loginCustomer(req.body.email, req.body.password).then(function(data) {
+    res.json(data);
+  });
 };
 
 /* Sign in with a facebook login token. */

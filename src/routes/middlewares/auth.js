@@ -30,7 +30,7 @@ exports.verifyToken = function(req, res, next){
 	}
       });
     } else {
-      console.log(decoded);
+      req['customerData'] = decoded;
       next();
     }
   } else {

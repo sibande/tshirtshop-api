@@ -23,14 +23,64 @@ exports.getCustomerInfoByEmail = function(email) {
   });
 };
 
+exports.updateCustomer = function(customerId, name, email, password, dayPhone, evePhone, mobPhone) {
+  return db.knex.raw(
+    'CALL customer_update_account(?, ?, ?, ?, ?, ?, ?);',
+    [customerId, name, email, password, dayPhone, evePhone, mobPhone]).then(function(data) {
+      return exports.getCustomerInfoById(customerId);
+    }).catch(function(reason) {
+      return {
+	error: {
+	  status: 400,
+	  code: 'USR_01',
+	  message: reason
+	}
+      };
+    });
+};
+
+exports.updateCustomerAddress = function(customerId, address1, address2, city, region, postalCode,
+					 country, shippingRegionId) {
+  return db.knex.raw(
+    'CALL customer_update_address(?, ?, ?, ?, ?, ?, ?, ?);',
+    [customerId, address1, address2, city, region, postalCode, country, shippingRegionId]).then(function(data) {
+
+      return exports.getCustomerInfoById(customerId);
+  }).catch(function(reason) {
+    return {
+      error: {
+	status: 400,
+	code: 'USR_01',
+	message: reason
+      }
+    };
+  });
+};
+
+exports.updateCustomerCreditCard = function(customerId, creditCard) {
+  return db.knex.raw('CALL customer_update_credit_card(?, ?);', [customerId, creditCard]).then(function(data) {
+      return exports.getCustomerInfoById(customerId);
+  }).catch(function(reason) {
+    return {
+      error: {
+	status: 400,
+	code: 'USR_01',
+	message: reason
+      }
+    };
+  });
+};
+
 exports.getCustomerInfoById = function(customerId) {
   return db.knex.raw('CALL customer_get_customer(?);', [customerId]).then(function(data) {
     data = data[0][0];
     if (data.length === 0) {  // Not found
       throw 'The customer with this ID does not exist.';
     }
+    data = data[0];
+    delete data['password'];
 
-    return data[0];
+    return data;
   }).catch(function(reason) {
     return {
       error: {

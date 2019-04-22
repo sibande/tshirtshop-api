@@ -2,12 +2,24 @@ var Customer = require('../db/models/customer');
 
 /* Update a customer */
 exports.updateCustomer = function(req, res) {
-  res.render('index', { title: 'Update a customer' });
+  Customer.updateCustomer(
+    req.customerData.id,
+    req.body.name,
+    req.body.email,
+    req.body.password,
+    req.body.day_phone,
+    req.body.eve_phone,
+    req.body.mob_phone
+  ).then(function(data) {
+    res.json(data);
+  });
 };
 
 /* Get a customer by ID. The customer is getting by Token. */
 exports.getCustomer = function(req, res) {
-  res.render('index', { title: 'Get a customer by ID. The customer is getting by Token.' });
+  Customer.getCustomerInfoById(req.customerData.id).then(function(data) {
+      res.json(data);
+    });
 };
 
 /* Register a Customer */
@@ -34,11 +46,24 @@ exports.facebookLoginCustomer = function(req, res) {
 
 /* Update the address from customer */
 exports.updateCustomerAddress = function(req, res) {
-  res.render('index', { title: 'Update the address from customer' });
+  Customer.updateCustomerAddress(
+    req.customerData.id,
+    req.body.address_1,
+    req.body.address_2,
+    req.body.city,
+    req.body.region,
+    req.body.postal_code,
+    req.body.country,
+    req.body.shipping_region_id
+  ).then(function(data) {
+    res.json(data);
+  });
 };
 
 /* Update credit card */
 exports.updateCustomerCreditCard = function(req, res) {
-  res.render('index', { title: 'Update credit card' });
+  Customer.updateCustomerCreditCard(req.customerData.id, req.body.credit_card).then(function(data) {
+    res.json(data);
+  });
 };
 

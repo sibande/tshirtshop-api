@@ -1,3 +1,5 @@
+var fetch = require('node-fetch');
+
 var db = require('../index');
 var authUtils = require('../../utils/auth');
 
@@ -40,7 +42,37 @@ exports.getCustomerInfoById = function(customerId) {
   });
 };
 
+function _registerCustomer(name, email, password) {
+  return db.knex.raw(
+    'CALL customer_add(?, ?, ?);',
+    [name, email, password]).then(function(data) {
+      data = data[0][0];
 
+      return exports.getCustomerInfoByEmail(email).then(function(data) {
+	/* FIXME */
+
+	return exports.getCustomerInfoById(data.customer_id).then(function(data) {
+	  return {
+	    customer: data,
+	    accessToken: 'Bearer ' + authUtils.generateToken({
+	      id: data.customer_id,
+	      name: data.name,
+	      email: data.email
+	    }),
+	    expires_in: '24h'
+	  };
+	});
+      });
+    }).catch(function(reason) {
+      return {
+	error: {
+	  status: 400,
+	  code: 'USR_01',
+	  message: reason
+	}
+      };
+    });
+}
 
 exports.registerCustomer = async function(name, email, password) {
   var existingCustomer = await exports.getCustomerInfoByEmail(email);
@@ -54,44 +86,16 @@ exports.registerCustomer = async function(name, email, password) {
 	}
     });
   }
-  
-  return db.knex.raw(
-    'CALL customer_add(?, ?, ?);',
-    [name, email, authUtils.getSHA1(password)]).then(function(data) {
-      data = data[0][0];
 
-      return exports.getCustomerInfoByEmail(email).then(function(data) {
-	/* FIXME */
+  password = authUtils.getSHA1(password);
 
-	return exports.getCustomerInfoById(data.customer_id).then(function(data) {
-	  return {
-	    customer: data,
-	    accessToken: authUtils.generateToken({
-	      id: data.customer_id,
-	      name: data.name,
-	      email: data.email
-	    }),
-	    expires_in: '24h'
-	  };
-	})
-      });
-    }).catch(function(reason) {
-      return {
-	error: {
-	  status: 400,
-	  code: 'USR_01',
-	  message: reason
-	}
-      };
-    });
+  return _registerCustomer(name, email, password);
 };
 
-exports.loginCustomer = async function(email, password) {
+async function _loginCustomer(email, password) {
   var customer = await exports.getCustomerInfoByEmail(email);
 
-  if ('error' in customer || customer.password !== authUtils.getSHA1(password)) {  // FIXME
-    console.log(customer);
-    console.log(authUtils.getSHA1(password))
+  if ('error' in customer || customer.password !== password) {  // FIXME
     return Promise.resolve({
 	error: {
 	  status: 400,
@@ -105,13 +109,66 @@ exports.loginCustomer = async function(email, password) {
     /* FIXME handle possible error */
     return {
       customer: data,
-      accessToken: authUtils.generateToken({
+      accessToken: 'Bearer ' + authUtils.generateToken({
 	id: data.customer_id,
 	name: data.name,
 	email: data.email
       }),
       expires_in: '24h'
     };
+  });
+}
+
+exports.loginCustomer = function(email, password) {
+  password = authUtils.getSHA1(password);
+
+  return _loginCustomer(email, password);
+};
+
+
+exports.facebookLoginCustomer = async function(accessToken) {
+  var appAccessToken = process.env.FB_APP_ID + '|' + process.env.FB_SECRET;
+
+  var verifyApi = 'https://graph.facebook.com/debug_token?input_token=' + accessToken
+      + '&access_token=' + appAccessToken;
+
+  return fetch(verifyApi, {method: 'GET'}).then(function(res) {
+    return res.json();
+  }).then(function(body) {
+    var fbAppId = body.data.app_id,
+	fbIsValid = body.data.is_valid,
+	fbUserId = body.data.user_id;
+
+    if (fbAppId !== process.env.FB_APP_ID || !fbIsValid) {
+      return Promise.resolve({
+	error: {
+	  status: 400,
+	  code: 'USR_01',
+	  message: 'Facebook login failed.'
+	}
+      });
+    }
+
+    var detailsApi = 'https://graph.facebook.com/' + fbUserId + '?fields=id,email,name,picture&access_token='
+	+ appAccessToken;
+
+    return fetch(detailsApi, {method: 'GET'}).then(function(res) {
+      return res.json();
+    }).then(function(body) {
+
+      if (!('email' in body)) {
+	throw 'Please add (or verify) your email to your profile or make it public.';
+      }
+
+      return exports.getCustomerInfoByEmail(body.email).then(function(customer) {
+	if ('error' in customer) {  // The customer is new
+	  return _registerCustomer(body.name, body.email, 'facebook');
+	} else {
+	  return _loginCustomer(body.email, 'facebook');
+	}
+      });
+    });
+
   });
 };
 

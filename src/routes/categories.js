@@ -1,11 +1,13 @@
 var express = require('express');
 var router = express.Router();
 
+var authMiddleware = require('../routes/middlewares/auth');
+
 var categoryController = require('../controllers/categoryController');
 
 
 /* Get Categories */
-router.get('/', categoryController.getCategoryList);
+router.get('/', [authMiddleware.verifyToken], categoryController.getCategoryList);
 
 /* Get Category by ID */
 router.get('/:categoryId([0-9]+)', categoryController.getCategoryById);

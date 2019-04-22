@@ -27,7 +27,9 @@ exports.loginCustomer = function(req, res) {
 
 /* Sign in with a facebook login token. */
 exports.facebookLoginCustomer = function(req, res) {
-  res.render('index', { title: 'Sign in with a facebook login token.' });
+  Customer.facebookLoginCustomer(req.body.access_token).then(function(data) {
+    res.json(data);
+  });
 };
 
 /* Update the address from customer */

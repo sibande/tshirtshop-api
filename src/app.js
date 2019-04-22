@@ -5,7 +5,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-require('dotenv').config()
+require('dotenv').config();
 
 var categoriesRouter = require('./routes/categories');
 var departmentsRouter = require('./routes/departments');
@@ -17,6 +17,8 @@ var shoppingcartRouter = require('./routes/shoppingcart');
 var shippingRouter = require('./routes/shipping');
 var stripeRouter = require('./routes/stripe');
 var taxRouter = require('./routes/tax');
+
+var authMiddleware = require('./routes/middlewares/auth');
 
 var app = express();
 
@@ -33,6 +35,18 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(authMiddleware.extractToken);
+
+
+app.get('/facebook_test', function (req, res) {
+  var fs = require("fs");
+
+  fs.readFile('/home/turing/test_facebook.html', function (err, data) {
+    res.send(data.toString());
+  });
+
+});
+
 
 app.use('/categories', categoriesRouter);
 app.use('/departments', departmentsRouter);

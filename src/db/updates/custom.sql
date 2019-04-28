@@ -210,6 +210,58 @@ BEGIN
   EXECUTE statement USING @p1, @p2, @p3, @p4, @p5;
 END$$
 
+
+-- Create shopping_cart_get_products stored procedure
+DROP PROCEDURE IF EXISTS shopping_cart_get_products $$
+
+CREATE PROCEDURE shopping_cart_get_products(IN inCartId CHAR(32))
+BEGIN
+  SELECT     sc.item_id, p.name, sc.attributes,
+             COALESCE(NULLIF(p.discounted_price, 0), p.price) AS price,
+             sc.quantity, sc.product_id,
+             COALESCE(NULLIF(p.discounted_price, 0), 
+                      p.price) * sc.quantity AS subtotal
+  FROM       shopping_cart sc
+  INNER JOIN product p
+               ON sc.product_id = p.product_id
+  WHERE      sc.cart_id = inCartId AND sc.buy_now ORDER BY sc.item_id ASC;
+END$$
+
+
+-- Create catalog_get_products_on_department stored procedure
+DROP PROCEDURE IF EXISTS catalog_get_products_on_department $$
+
+CREATE PROCEDURE catalog_get_products_on_department(
+  IN inDepartmentId INT, IN inShortProductDescriptionLength INT,
+  IN inProductsPerPage INT, IN inStartItem INT)
+BEGIN
+  PREPARE statement FROM
+    "SELECT p.product_id, p.name,
+                     IF(LENGTH(p.description) <= ?,
+                        p.description,
+                        CONCAT(LEFT(p.description, ?),
+                               '...')) AS description,
+                     p.price, p.discounted_price, p.thumbnail
+     FROM            product p
+     INNER JOIN      product_category pc
+                       ON p.product_id = pc.product_id
+     INNER JOIN      category c
+                       ON pc.category_id = c.category_id
+     WHERE           c.department_id = ?
+     GROUP BY        p.product_id
+     ORDER BY        p.display DESC
+     LIMIT           ?, ?";
+
+  SET @p1 = inShortProductDescriptionLength;
+  SET @p2 = inShortProductDescriptionLength;
+  SET @p3 = inDepartmentId;
+  SET @p4 = inStartItem;
+  SET @p5 = inProductsPerPage;
+
+  EXECUTE statement USING @p1, @p2, @p3, @p4, @p5;
+END$$
+
+
 -- Change back DELIMITER to ;
 DELIMITER ;
 

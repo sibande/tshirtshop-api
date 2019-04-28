@@ -2,6 +2,7 @@ var createError = require('http-errors');
 var express = require('express');
 var cors = require('cors');
 var bodyParser = require('body-parser');
+var multer = require('multer');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -24,7 +25,7 @@ var authMiddleware = require('./routes/middlewares/auth');
 var app = express();
 
 // CORS
-app.use(cors())
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -35,8 +36,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 // // https://stackoverflow.com/a/12008719
 
 app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(authMiddleware.extractToken);

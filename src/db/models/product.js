@@ -7,14 +7,17 @@ exports.getProducts = function(page, limit, descriptionLength) {
   descriptionLength = parseInt(descriptionLength) || 200;
   var startItem = (page - 1) * limit;
 
-  return db.knex.raw(
-    'CALL catalog_get_products_on_catalog(?, ?, ?);',
-    [descriptionLength, limit, startItem]).then(function(data) {
-      data = data[0][0];
-      return {count: data.length, rows: data};
-    }).catch(function(reason) {
-      return {};
-    });
+  return db.knex.raw('CALL catalog_count_products_on_catalog();', []).then(function(data) {
+    var productsCount = data[0][0][0]['products_on_catalog_count'];
+    return db.knex.raw(
+      'CALL catalog_get_products_on_catalog(?, ?, ?);',
+      [descriptionLength, limit, startItem]).then(function(data) {
+	data = data[0][0];
+	return {count: productsCount, rows: data};
+      }).catch(function(reason) {
+	return {};
+      });
+  });
 };
 
 exports.searchProducts = function(searchString, allWords, page, limit, descriptionLength) {
@@ -33,14 +36,17 @@ exports.searchProducts = function(searchString, allWords, page, limit, descripti
   limit = parseInt(limit) || 20;
   descriptionLength = parseInt(descriptionLength) || 200;
   var startItem = (page - 1) * limit;
-
   return db.knex.raw(
-    'CALL catalog_search(?, ?, ?, ?, ?);',
-    [searchString, allWords, descriptionLength, limit, startItem]).then(function(data) {
-      data = data[0][0];
-      return {count: data.length, rows: data};
-    }).catch(function(reason) {
-      return {};
+    'CALL catalog_count_search_result(?, ?);', [searchString, allWords]).then(function(data) {
+      var productsCount = data[0][0][0]['count(*)'];
+      return db.knex.raw(
+	'CALL catalog_search(?, ?, ?, ?, ?);',
+	[searchString, allWords, descriptionLength, limit, startItem]).then(function(data) {
+	  data = data[0][0];
+	  return {count: productsCount, rows: data};
+	}).catch(function(reason) {
+	  return {};
+	});
     });
 };
 
@@ -85,14 +91,18 @@ exports.getCategoryProducts = function(categoryId, page, limit, descriptionLengt
   limit = parseInt(limit) || 20;
   descriptionLength = parseInt(descriptionLength) || 200;
   var startItem = (page - 1) * limit;
-
   return db.knex.raw(
-    'CALL catalog_get_products_in_category(?, ?, ?, ?);',
-    [categoryId, descriptionLength, limit, startItem]).then(function(data) {
-      data = data[0][0];
-      return {count: data.length, rows: data};
-    }).catch(function(reason) {
-      return {};
+    'CALL catalog_count_products_in_category(?);', [categoryId]).then(function(data) {
+      var productsCount = data[0][0][0]['categories_count'];
+
+      return db.knex.raw(
+	'CALL catalog_get_products_in_category(?, ?, ?, ?);',
+	[categoryId, descriptionLength, limit, startItem]).then(function(data) {
+	  data = data[0][0];
+	  return {count: productsCount, rows: data};
+	}).catch(function(reason) {
+	  return {};
+	});
     });
 };
 
@@ -103,12 +113,17 @@ exports.getDepartmentProducts = function(departmentId, page, limit, descriptionL
   var startItem = (page - 1) * limit;
 
   return db.knex.raw(
-    'CALL catalog_get_products_on_department(?, ?, ?, ?);',
-    [departmentId, descriptionLength, limit, startItem]).then(function(data) {
-      data = data[0][0];
-      return {count: data.length, rows: data};
-    }).catch(function(reason) {
-      return {};
+    'CALL catalog_count_products_on_department(?);', [departmentId]).then(function(data) {
+      var productsCount = data[0][0][0]['products_on_department_count'];
+
+      return db.knex.raw(
+	'CALL catalog_get_products_on_department(?, ?, ?, ?);',
+	[departmentId, descriptionLength, limit, startItem]).then(function(data) {
+	  data = data[0][0];
+	  return {count: productsCount, rows: data};
+	}).catch(function(reason) {
+	  return {};
+	});
     });
 };
 

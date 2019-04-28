@@ -144,7 +144,7 @@ exports.getProductsSavedForLater = function(cartId) {
 exports.getCartTotalAmount = function(cartId) {
   return db.knex.raw('CALL shopping_cart_get_total_amount(?);', [cartId]).then(function(data) {
     data = data[0][0];
-    return data;
+    return data[0];
   }).catch(function(reason) {
     return {
       error: {

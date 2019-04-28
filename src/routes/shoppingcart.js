@@ -1,4 +1,7 @@
 var express = require('express');
+var multer  = require('multer');
+var upload = multer();
+
 var router = express.Router();
 
 var shoppingcartController = require('../controllers/shoppingcartController');
@@ -8,13 +11,13 @@ var shoppingcartController = require('../controllers/shoppingcartController');
 router.get('/generateUniqueId', shoppingcartController.generateUniqueId);
 
 /* Add a Product in the cart */
-router.post('/add', shoppingcartController.addProductToCart);
+router.post('/add', upload.none(), shoppingcartController.addProductToCart);
 
 /* Get List of Products in Shopping Cart */
 router.get('/:cartId([a-zA-Z0-9]+)', shoppingcartController.getCartProductList);
 
 /* Update the cart by item */
-router.put('/update/:itemId([0-9]+)', shoppingcartController.updateCartByItem);
+router.put('/update/:itemId([0-9]+)', upload.none(), shoppingcartController.updateCartByItem);
 
 /* Empty cart */
 router.delete('/empty/:cartId([a-zA-Z0-9]+)', shoppingcartController.emptyCartById);

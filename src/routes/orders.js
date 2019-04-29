@@ -1,12 +1,15 @@
 var express = require('express');
 var router = express.Router();
 
+var multer  = require('multer');
+var upload = multer();
+
 var authMiddleware = require('../routes/middlewares/auth');
 
 var orderController = require('../controllers/orderController');
 
 /* Create a Order */
-router.post('/', [authMiddleware.verifyToken], orderController.createOrder);
+router.post('/', [upload.none(), authMiddleware.verifyToken], orderController.createOrder);
 
 /* Get Info about Order */
 router.get('/:orderId([0-9]+)', [authMiddleware.verifyToken], orderController.getOrderInfo);

@@ -5,8 +5,8 @@ var authUtils = require('../../utils/auth');
 exports.extractToken = function(req, res, next){
   var headerKey = 'Bearer';
 
-  if (req.headers.authorization) {
-    var parts = req.headers.authorization.split(' ');
+  if (req.headers['user-key']) {
+    var parts = req.headers['user-key'].split(' ');
     if (parts.length === 2 && parts[0] === headerKey) {
       req['token'] = parts[1];
     }

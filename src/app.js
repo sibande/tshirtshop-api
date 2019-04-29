@@ -14,6 +14,7 @@ var departmentsRouter = require('./routes/departments');
 var attributesRouter = require('./routes/attributes');
 var productsRouter = require('./routes/products');
 var customersRouter = require('./routes/customers');
+var customerRouter = require('./routes/customer');
 var ordersRouter = require('./routes/orders');
 var shoppingcartRouter = require('./routes/shoppingcart');
 var shippingRouter = require('./routes/shipping');
@@ -51,12 +52,12 @@ app.get('/facebook_test', function (req, res) {
 
 });
 
-
 app.use('/categories', categoriesRouter);
 app.use('/departments', departmentsRouter);
 app.use('/attributes', attributesRouter);
 app.use('/products', productsRouter);
 app.use('/customers', customersRouter);
+app.use('/customer', customerRouter);
 app.use('/orders', ordersRouter);
 app.use('/shoppingcart', shoppingcartRouter);
 app.use('/shipping', shippingRouter);

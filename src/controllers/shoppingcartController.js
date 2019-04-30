@@ -1,4 +1,5 @@
 var Shoppingcart = require('../db/models/shoppingcart');
+var response = require('./../utils/response.js');
 
 
 /* Generete the unique CART ID */
@@ -12,7 +13,7 @@ exports.generateUniqueId = function(req, res) {
 exports.addProductToCart = function(req, res) {
   Shoppingcart.addProductToCart(
     req.body.cart_id, req.body.product_id, req.body.attributes).then(function(data) {
-      res.json(data);
+      return response.sendResponse(data, req, res);
     });
 };
 

@@ -1,5 +1,7 @@
 var express = require('express');
 
+const { check } = require('express-validator/check');
+
 var multer  = require('multer');
 var upload = multer();
 
@@ -14,10 +16,17 @@ var customerController = require('../controllers/customerController');
 router.get('/', [authMiddleware.verifyToken], customerController.getCustomer);
 
 /* Register a Customer */
-router.post('/', upload.none(), customerController.registerCustomer);
+router.post('/', upload.none(), [
+  check('email').isEmail(),
+  check('name').isLength({min: 1}),
+  check('password').isLength({min: 1})
+], customerController.registerCustomer);
 
 /* Sign in in the Shopping. */
-router.post('/login', upload.none(), customerController.loginCustomer);
+router.post('/login', upload.none(), [
+  check('email').isEmail(),
+  check('password').isLength({min: 1})
+], customerController.loginCustomer);
 
 /* Sign in with a facebook login token. */
 router.post('/facebook', upload.none(), customerController.facebookLoginCustomer);

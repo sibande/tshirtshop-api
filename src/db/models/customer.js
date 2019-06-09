@@ -1,7 +1,10 @@
 var fetch = require('node-fetch');
+var mailgun = require("mailgun-js");
 
 var db = require('../index');
 var authUtils = require('../../utils/auth');
+
+var mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN});
 
 
 exports.getCustomerInfoByEmail = function(email) {
@@ -105,6 +108,15 @@ function _registerCustomer(name, email, password) {
 	/* FIXME */
 
 	return exports.getCustomerInfoById(data.customer_id).then(function(data) {
+	  var mailData = {
+	    from: process.env.FROM_EMAIL_ADDRESS,
+	    to: 'me@sibande.com',
+	    subject: 'Your account has been created',
+	    text: 'Your account has been created'
+	  };
+	  mg.messages().send(mailData, function (error, body) {
+	  });
+
 	  return {
 	    customer: data,
 	    accessToken: 'Bearer ' + authUtils.generateToken({

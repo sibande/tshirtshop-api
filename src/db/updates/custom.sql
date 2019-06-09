@@ -243,6 +243,32 @@ BEGIN
 END$$
 
 
+-- Create customer_update_account stored procedure
+DROP PROCEDURE IF EXISTS customer_update_account $$
+
+CREATE PROCEDURE customer_update_account(IN inCustomerId INT,
+  IN inName VARCHAR(50), IN inEmail VARCHAR(100),
+  IN inPassword VARCHAR(50), IN inDayPhone VARCHAR(100),
+  IN inEvePhone VARCHAR(100), IN inMobPhone VARCHAR(100))
+BEGIN
+
+  IF inPassword IS NULL OR inPassword = '' THEN
+    -- Don't update password
+    UPDATE customer
+    SET    name = inName, email = inEmail,
+         day_phone = inDayPhone,
+         eve_phone = inEvePhone, mob_phone = inMobPhone
+    WHERE  customer_id = inCustomerId;
+  ELSE
+    UPDATE customer
+    SET    name = inName, email = inEmail,
+         password = inPassword, day_phone = inDayPhone,
+         eve_phone = inEvePhone, mob_phone = inMobPhone
+    WHERE  customer_id = inCustomerId;
+  END IF;
+END$$
+
+
 -- Create catalog_get_products_on_department stored procedure
 DROP PROCEDURE IF EXISTS catalog_get_products_on_department $$
 

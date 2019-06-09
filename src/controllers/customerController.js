@@ -9,7 +9,7 @@ exports.updateCustomer = function(req, res) {
     req.customerData.id,
     req.body.name,
     req.body.email,
-    req.body.password,
+    req.body.password || null,
     req.body.day_phone,
     req.body.eve_phone,
     req.body.mob_phone

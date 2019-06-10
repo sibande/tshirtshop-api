@@ -1,6 +1,8 @@
 var createError = require('http-errors');
 var express = require('express');
 var cors = require('cors');
+var swaggerUi = require('swagger-ui-express');
+var swaggerJSDoc = require('swagger-jsdoc');
 var bodyParser = require('body-parser');
 var multer = require('multer');
 var path = require('path');
@@ -43,14 +45,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(authMiddleware.extractToken);
 
 
-app.get('/facebook_test', function (req, res) {
-  var fs = require("fs");
+var swaggerOptions = {
+  definition: {
+    info: {
+      title: 'T-Shirt Shop API',
+      version: '1.0.0'
+    }
+  },
+  apis: ['./routes/*.js']
+};
 
-  fs.readFile('/home/turing/test_facebook.html', function (err, data) {
-    res.send(data.toString());
-  });
+// Initialize swagger-jsdoc -> returns validated swagger spec in json format
+var swaggerSpec = swaggerJSDoc(swaggerOptions);
 
-});
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 app.use('/categories', categoriesRouter);
 app.use('/departments', departmentsRouter);

@@ -31,7 +31,7 @@ exports.searchProducts = function(searchString, allWords, page, limit, descripti
     });
   }
   
-  allWords = allWords === 'yes' ? allWords : 'no';
+  allWords = allWords === 'off' ? allWords : 'on';
   page = parseInt(page) || 1;
   limit = parseInt(limit) || 20;
   descriptionLength = parseInt(descriptionLength) || 200;
@@ -39,6 +39,8 @@ exports.searchProducts = function(searchString, allWords, page, limit, descripti
   return db.knex.raw(
     'CALL catalog_count_search_result(?, ?);', [searchString, allWords]).then(function(data) {
       var productsCount = data[0][0][0]['count(*)'];
+
+      console.log([searchString, allWords, descriptionLength, limit, startItem]);
       return db.knex.raw(
 	'CALL catalog_search(?, ?, ?, ?, ?);',
 	[searchString, allWords, descriptionLength, limit, startItem]).then(function(data) {

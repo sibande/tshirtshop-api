@@ -43,6 +43,8 @@ exports.registerCustomer = function(req, res) {
 exports.loginCustomer = function(req, res) {
   const errors = validationResult(req);
 
+  console.log(req.body);
+
   if (!errors.isEmpty()) {
     return response.sendValidateResponse(errors, 'USR', req, res);
   }

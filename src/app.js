@@ -47,10 +47,14 @@ app.use(authMiddleware.extractToken);
 
 var swaggerOptions = {
   definition: {
+    openapi: "3.0.2",
     info: {
       title: 'T-Shirt Shop API',
       version: '1.0.0'
-    }
+    },
+    servers: [{
+      url: '/' + process.env.API_VERSION + '/'
+    }]
   },
   apis: ['./routes/*.js']
 };

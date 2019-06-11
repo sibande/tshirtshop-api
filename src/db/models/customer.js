@@ -146,7 +146,8 @@ exports.registerCustomer = async function(name, email, password) {
     return Promise.resolve({
 	error: {
 	  status: 400,
-	  code: 'USR_04',
+	  field: 'email',
+	  code: 'USR_01',
 	  message: 'The email already exists.'
 	}
     });

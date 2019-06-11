@@ -1,7 +1,5 @@
 var express = require('express');
 
-const { check } = require('express-validator/check');
-
 var multer  = require('multer');
 var upload = multer();
 
@@ -158,12 +156,34 @@ router.get('/', [authMiddleware.verifyToken], customerController.getCustomer);
  *             application/json:
  *               schema:
  *                 $ref: '#/components/schemas/Error'
+ *           examples:
+ *             Empty name:
+ *               code: USR_02
+ *               message: Name can't be blank
+ *               field: name
+ *               status: 400
+ *             Empty email:
+ *               code: USR_02
+ *               message: Email can't be blank
+ *               field: email
+ *               status: 400
+ *             Invalid email:
+ *               code: USR_03
+ *               message: Email is not a valid email
+ *               field: email
+ *               status: 400
+ *             Empty password:
+ *               code: USR_02
+ *               message: Password can't be blank
+ *               field: password
+ *               status: 400
+ *             Email already exists:
+ *               status: 400
+ *               field: email
+ *               code: USR_01
+ *               message: The email already exists.
  */
-router.post('/', upload.none(), [
-  check('email').isEmail(),
-  check('name').isLength({min: 1}),
-  check('password').isLength({min: 1})
-], customerController.registerCustomer);
+router.post('/', upload.none(), customerController.registerCustomer);
 
 
 /**
@@ -209,11 +229,28 @@ router.post('/', upload.none(), [
  *             application/json:
  *               schema:
  *                 $ref: '#/components/schemas/Error'
+ *           examples:
+ *             Empty email field:
+ *               code: USR_2
+ *               message: Email can't be blank
+ *               field: email
+ *               status: 400
+ *             Email invalid:
+ *               code: USR_3
+ *               message: Email is not a valid email
+ *               field: email
+ *               status: 400
+ *             Empty password field:
+ *               code: USR_02
+ *               message: Password can't be blank
+ *               field: password
+ *               status: 400
+ *             Invalid email and password combination:
+ *               status: 400
+ *               code: USR_01
+ *               message: Email or Password is invalid.
  */
-router.post('/login', upload.none(), [
-  check('email').isEmail(),
-  check('password').isLength({min: 1})
-], customerController.loginCustomer);
+router.post('/login', upload.none(), customerController.loginCustomer);
 
 
 /**
@@ -255,13 +292,15 @@ router.post('/login', upload.none(), [
  *               schema:
  *                 $ref: '#/components/schemas/Error'
  *           examples:
- *             Not JSON body:
- *               error:
- *                 code: json_parse_error
- *                 detail: Valid JSON object is expected
- *             Invalid parameter value:
- *               error:
- *                 code: invalid_parameter_value
+ *             Empty access token:
+ *               code: USR_02
+ *               message: Access token can't be blank
+ *               field: access_token
+ *               status: 400
+ *             Invalid access token:
+ *               status: 400
+ *               code: USR_01,
+ *               message: Facebook login failed.
  */
 router.post('/facebook', upload.none(), customerController.facebookLoginCustomer);
 

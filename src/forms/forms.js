@@ -36,6 +36,75 @@ var registerConstraints = {
 exports.registerConstraints = registerConstraints;
 
 
+var customerConstraints = {
+    name: {
+      presence: {allowEmpty: false}
+    },
+    email: {
+      presence: {allowEmpty: false},
+      email: true
+    },
+    day_phone: {
+      presence: false,
+      format: {
+	pattern: /(\+?\d{6,22})?/,
+	message: "format invalid, only numeric values allowed"
+      }
+    },
+    eve_phone: {
+      presence: false,
+      format: {
+	pattern: /(\+?\d{6,22})?/,
+	message: "format invalid, only numeric values allowed"
+      }
+    },
+    mob_phone: {
+      presence: false,
+      format: {
+	pattern: /(\+?\d{6,22})?/,
+	message: "format invalid, only numeric values allowed"
+      }
+    },
+    password: {
+      presence: false
+    }
+};
+exports.customerConstraints = customerConstraints;
+
+
+var addressConstraints = {
+    address_1: {
+      presence: {allowEmpty: false}
+    },
+    city: {
+      presence: {allowEmpty: false}
+    },
+    region: {
+      presence: {allowEmpty: false}
+    },
+    postal_code: {
+      presence: {allowEmpty: false}
+    },
+    country: {
+      presence: {allowEmpty: false}
+    },
+    shipping_region_id: {
+      presence: {allowEmpty: false},
+      numericality: {onlyInteger: true}
+    }
+};
+exports.addressConstraints = addressConstraints;
+
+
+var creditCardConstraints = {
+    credit_card: {
+      presence: {allowEmpty: false}
+    }
+};
+exports.creditCardConstraints = creditCardConstraints;
+
+
+
 function validateForm(constraints, data) {
   var errors = validate(data, constraints, {format: "detailed"});
 

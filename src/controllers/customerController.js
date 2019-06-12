@@ -7,14 +7,20 @@ var forms = require('../forms/forms');
 
 /* Update a customer */
 exports.updateCustomer = function(req, res) {
+  var error = forms.validateForm(forms.customerConstraints, req.body);
+
+  if (error !== false) {
+    return response.sendErrorResponse(error, req, res);
+  }
+
   Customer.updateCustomer(
     req.customerData.id,
-    req.body.name,
-    req.body.email,
+    req.body.name || '',
+    req.body.email || '',
     req.body.password || null,
-    req.body.day_phone,
-    req.body.eve_phone,
-    req.body.mob_phone
+    req.body.day_phone || '',
+    req.body.eve_phone || '',
+    req.body.mob_phone || ''
   ).then(function(data) {
     res.json(data);
   });
@@ -68,15 +74,21 @@ exports.facebookLoginCustomer = function(req, res) {
 
 /* Update the address from customer */
 exports.updateCustomerAddress = function(req, res) {
+  var error = forms.validateForm(forms.addressConstraints, req.body);
+
+  if (error !== false) {
+    return response.sendErrorResponse(error, req, res);
+  }
+
   Customer.updateCustomerAddress(
     req.customerData.id,
-    req.body.address_1,
-    req.body.address_2,
-    req.body.city,
-    req.body.region,
-    req.body.postal_code,
-    req.body.country,
-    req.body.shipping_region_id
+    req.body.address_1 || '',
+    req.body.address_2 || '',
+    req.body.city || '',
+    req.body.region || '',
+    req.body.postal_code || '',
+    req.body.country || '',
+    req.body.shipping_region_id || ''
   ).then(function(data) {
     res.json(data);
   });
@@ -84,6 +96,12 @@ exports.updateCustomerAddress = function(req, res) {
 
 /* Update credit card */
 exports.updateCustomerCreditCard = function(req, res) {
+  var error = forms.validateForm(forms.creditCardConstraints, req.body);
+
+  if (error !== false) {
+    return response.sendErrorResponse(error, req, res);
+  }
+
   Customer.updateCustomerCreditCard(req.customerData.id, req.body.credit_card).then(function(data) {
     res.json(data);
   });

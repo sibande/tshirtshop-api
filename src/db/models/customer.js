@@ -27,8 +27,9 @@ exports.getCustomerInfoByEmail = function(email) {
 };
 
 exports.updateCustomer = function(customerId, name, email, password, dayPhone, evePhone, mobPhone) {
-
-  password = authUtils.getSHA1(password);
+  if (password) {
+    password = authUtils.getSHA1(password);
+  }
 
   return db.knex.raw(
     'CALL customer_update_account(?, ?, ?, ?, ?, ?, ?);',

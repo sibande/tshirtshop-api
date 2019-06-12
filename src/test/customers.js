@@ -1,4 +1,3 @@
-
 var chai = require('chai');
 var assert = require('chai').assert;
 
@@ -414,6 +413,27 @@ describe("Customers", () => {
   // Update customer
   describe("PUT /customers/address", () => {
 
+    it("Update a address without a User-Key header", (done) => {
+      chai.request(app)
+        .put('/customers/address')
+        .end((err, res) => {
+	  assert.equal(res.status, 401, 'respond with status 401 when the User-Key header is empty');
+	  assert.equal(res.body.code, 'AUT_01', 'AUT_01 code for an empty User-Key header');
+          done();
+        });
+    });
+
+    it("Update a address without an invalid User-Key header", (done) => {
+      chai.request(app)
+        .put('/customers/address')
+	.set('User-Key', 'Bearer ' + new Date().getTime())
+        .end((err, res) => {
+	  assert.equal(res.status, 401, 'respond with status 401 when the User-Key header is invalid');
+	  assert.equal(res.body.code, 'AUT_02', 'AUT_02 code for an invalid User-Key header');
+          done();
+        });
+    });
+
     it("Update a address with an empty address 1 field", (done) => {
 
       // Login first
@@ -421,7 +441,7 @@ describe("Customers", () => {
 	.post('/customers/login')
 	.send({email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD})
 	.end((err, res) => {
-	  // Update customer
+	  // Update address
 	  chai.request(app)
             .put('/customers/address')
 	    .set('User-Key', res.body.accessToken)
@@ -444,7 +464,7 @@ describe("Customers", () => {
 	.post('/customers/login')
 	.send({email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD})
 	.end((err, res) => {
-	  // Update customer
+	  // Update address
 	  chai.request(app)
             .put('/customers/address')
 	    .set('User-Key', res.body.accessToken)
@@ -466,7 +486,7 @@ describe("Customers", () => {
 	.post('/customers/login')
 	.send({email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD})
 	.end((err, res) => {
-	  // Update customer
+	  // Update address
 	  chai.request(app)
             .put('/customers/address')
 	    .set('User-Key', res.body.accessToken)
@@ -488,7 +508,7 @@ describe("Customers", () => {
 	.post('/customers/login')
 	.send({email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD})
 	.end((err, res) => {
-	  // Update customer
+	  // Update address
 	  chai.request(app)
             .put('/customers/address')
 	    .set('User-Key', res.body.accessToken)
@@ -511,7 +531,7 @@ describe("Customers", () => {
 	.post('/customers/login')
 	.send({email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD})
 	.end((err, res) => {
-	  // Update customer
+	  // Update address
 	  chai.request(app)
             .put('/customers/address')
 	    .set('User-Key', res.body.accessToken)
@@ -532,7 +552,7 @@ describe("Customers", () => {
 	.post('/customers/login')
 	.send({email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD})
 	.end((err, res) => {
-	  // Update customer
+	  // Update address
 	  chai.request(app)
             .put('/customers/address')
 	    .set('User-Key', res.body.accessToken)
@@ -558,7 +578,7 @@ describe("Customers", () => {
 	.post('/customers/login')
 	.send({email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD})
 	.end((err, res) => {
-	  // Update customer
+	  // Update address
 	  chai.request(app)
             .put('/customers/address')
 	    .set('User-Key', res.body.accessToken)
@@ -585,7 +605,7 @@ describe("Customers", () => {
 	.post('/customers/login')
 	.send({email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD})
 	.end((err, res) => {
-	  // Update customer
+	  // Update address
 	  chai.request(app)
             .put('/customers/address')
 	    .set('User-Key', res.body.accessToken)
@@ -611,6 +631,28 @@ describe("Customers", () => {
     // Update customer
   describe("PUT /customers/creditCard", () => {
 
+    it("Update a credit card without a User-Key header", (done) => {
+      chai.request(app)
+        .put('/customers/creditCard')
+        .end((err, res) => {
+	  assert.equal(res.status, 401, 'respond with status 401 when the User-Key header is empty');
+	  assert.equal(res.body.code, 'AUT_01', 'AUT_01 code for an empty User-Key header');
+          done();
+        });
+    });
+
+    it("Update credit card without an invalid User-Key header", (done) => {
+      chai.request(app)
+        .put('/customers/creditCard')
+	.set('User-Key', 'Bearer ' + new Date().getTime())
+        .end((err, res) => {
+	  assert.equal(res.status, 401, 'respond with status 401 when the User-Key header is invalid');
+	  assert.equal(res.body.code, 'AUT_02', 'AUT_02 code for an invalid User-Key header');
+          done();
+        });
+    });
+
+
     it("Update a credit card with an empty field", (done) => {
 
       // Login first
@@ -618,7 +660,7 @@ describe("Customers", () => {
 	.post('/customers/login')
 	.send({email: process.env.TEST_USER_EMAIL, password: process.env.TEST_USER_PASSWORD})
 	.end((err, res) => {
-	  // Update customer
+	  // Update credit card
 	  chai.request(app)
             .put('/customers/creditCard')
 	    .set('User-Key', res.body.accessToken)

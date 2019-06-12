@@ -97,12 +97,46 @@ exports.addressConstraints = addressConstraints;
 
 
 var creditCardConstraints = {
-    credit_card: {
-      presence: {allowEmpty: false}
-    }
+  credit_card: {
+    presence: {allowEmpty: false}
+  }
 };
 exports.creditCardConstraints = creditCardConstraints;
 
+
+var orderConstraints = {
+  cart_id: {
+    presence: {allowEmpty: false}
+  },
+  shipping_id: {
+    presence: {allowEmpty: false},
+    numericality: {onlyInteger: true}
+  },
+  tax_id: {
+    presence: {allowEmpty: false},
+    numericality: {onlyInteger: true}
+  }
+};
+exports.orderConstraints = orderConstraints;
+
+
+var stripeConstraints = {
+  stripeToken: {
+    presence: {allowEmpty: false}
+  },
+  order_id: {
+    presence: {allowEmpty: false},
+    numericality: {onlyInteger: true}
+  },
+  description: {
+    presence: {allowEmpty: false}
+  },
+  amount: {
+    presence: {allowEmpty: false},
+    numericality: {onlyInteger: true}
+  }
+};
+exports.stripeConstraints = stripeConstraints;
 
 
 function validateForm(constraints, data) {

@@ -37,7 +37,7 @@ exports.chargeOrder = function(orderId, token, amount, description, currency) {
         return {
           error: {
       	    status: 400,
-      	    code: 'USR_01',
+      	    code: 'STP_03',
       	    message: reason
           }
         };

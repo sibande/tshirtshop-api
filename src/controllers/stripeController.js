@@ -1,18 +1,24 @@
+var response = require('./../utils/response.js');
 var StripePayment = require('../db/models/stripe');
-
+var forms = require('../forms/forms');
 
 
 /* This method receive a front-end payment and create a chage. */
 exports.createCharge = function(req, res) {
-  console.log(req.body);
+  var error = forms.validateForm(forms.stripeConstraints, req.body);
+
+  if (error !== false) {
+    return response.sendErrorResponse(error, req, res);
+  }
+
   StripePayment.chargeOrder(
     req.body.order_id, req.body.stripeToken, req.body.amount,
     req.body.description, req.body.currency).then(function(data) {
-      res.json(data);
+      response.sendResponse(data, req, res);
     });
 };
 
 /* Endpoint that provide a synchronization */
 exports.handleWebhooks = function(req, res) {
-  res.render('index', { title: 'Endpoint that provide a synchronization' });
+  response.sendResponse({ title: 'Endpoint that provide a synchronization' }, req, res);
 };

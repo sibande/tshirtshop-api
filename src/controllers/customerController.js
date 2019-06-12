@@ -1,5 +1,3 @@
-const { validationResult } = require('express-validator/check');
-
 var response = require('./../utils/response.js');
 var Customer = require('../db/models/customer');
 var forms = require('../forms/forms');
@@ -29,8 +27,8 @@ exports.updateCustomer = function(req, res) {
 /* Get a customer by ID. The customer is getting by Token. */
 exports.getCustomer = function(req, res) {
   Customer.getCustomerInfoById(req.customerData.id).then(function(data) {
-      res.json(data);
-    });
+    response.sendResponse(data, req, res);
+  });
 };
 
 /* Register a Customer */
@@ -103,7 +101,7 @@ exports.updateCustomerCreditCard = function(req, res) {
   }
 
   Customer.updateCustomerCreditCard(req.customerData.id, req.body.credit_card).then(function(data) {
-    res.json(data);
+    response.sendResponse(data, req, res);
   });
 };
 

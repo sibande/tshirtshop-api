@@ -22,12 +22,10 @@ exports.verifyToken = function(req, res, next){
 
     if (decoded === false) {
       // Token invalid / expired / etc
-      res.status(400).json({
-	error: {
-	  status: 400,
-	  code: 'USR_02',
-	  message: 'Access Unauthorized.'
-	}
+      res.status(401).json({
+	status: 401,
+	code: 'AUT_02',
+	message: 'Access Unauthorized.'
       });
     } else {
       req['customerData'] = decoded;
@@ -35,12 +33,10 @@ exports.verifyToken = function(req, res, next){
     }
   } else {
     // Token not specified
-    res.status(400).json({
-      error: {
-	status: 400,
-	code: 'USR_01',
-	message: 'Authorization code is empty.'
-      }
+    res.status(401).json({
+      status: 401,
+      code: 'AUT_01',
+      message: 'Authorization code is empty.'
     });
   }
 };

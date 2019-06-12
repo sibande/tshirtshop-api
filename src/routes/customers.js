@@ -20,6 +20,16 @@ var customerController = require('../controllers/customerController');
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *     ApiKeyAuth:
+ *       type: apiKey
+ *       in: header
+ *       name: USER-KEY
+ */
+
+/**
+ * @swagger
+ * components:
  *   schemas:
  *     Error:
  *       properties:
@@ -69,7 +79,7 @@ var customerController = require('../controllers/customerController');
  *           example: Gauteng
  *         postal_code:
  *           type: string
- *           example: 0001
+ *           example: "0001"
  *         country:
  *           type: string
  *           example: South Africa
@@ -78,13 +88,13 @@ var customerController = require('../controllers/customerController');
  *           example: 4
  *         day_phone:
  *           type: string
- *           example: +27210000000
+ *           example: "+27210000000"
  *         eve_phone:
  *           type: string
- *           example: +27110000000
+ *           example: "+27110000000"
  *         mob_phone:
  *           type: string
- *           example: +27620000000
+ *           example: "+27620000000"
  */
 
 /**
@@ -102,11 +112,6 @@ var customerController = require('../controllers/customerController');
  *           type: string
  *           example: 24h
  */
-
-
-
-/* Get a customer by ID. The customer is getting by Token. */
-router.get('/', [authMiddleware.verifyToken], customerController.getCustomer);
 
 
 /**
@@ -304,10 +309,173 @@ router.post('/login', upload.none(), customerController.loginCustomer);
  */
 router.post('/facebook', upload.none(), customerController.facebookLoginCustomer);
 
-/* Update the address from customer */
+
+/**
+ * Update the address from customer
+ *
+ *
+ * @swagger
+ * paths:
+ *   /customers/address:
+ *     put:
+ *       summary: Update the address from customer
+ *       description: Update the address from customer
+ *       tags: [customers]
+ *       produces:
+ *         - application/json
+ *       security:
+ *         - ApiKeyAuth: []
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/x-www-form-urlencoded:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 address_1:
+ *                   description: Address 1
+ *                   type: string
+ *                 address_2:
+ *                   description: Address 2
+ *                   type: string
+ *                 city:
+ *                   description: City.
+ *                   type: string
+ *                 region:
+ *                   description: Region
+ *                   type: string
+ *                 postal_code:
+ *                   description: Postal Code
+ *                   type: string
+ *                 country:
+ *                   description: Country
+ *                   type: string
+ *                 shipping_region_id:
+ *                   description: Shipping Region ID.
+ *                   type: integer
+ *               required:
+ *                 - address_1
+ *                 - city
+ *                 - region
+ *                 - postal_code
+ *                 - country
+ *                 - shipping_region_id
+ *       responses:
+ *         200:
+ *           description: Return a Customer object
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Customer'
+ *         400:
+ *           description: Returns an error object
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Error'
+ *           examples:
+ *             User Key empty:
+ *               status: 401
+ *               code: AUT_01
+ *               message: Authorization code is empty.
+ *             User Key invalid:
+ *               status: 401
+ *               code: AUT_02
+ *               message: Access Unauthorized.
+ *             Empty address 1:
+ *               code: USR_02
+ *               message: Address 1 can't be blank
+ *               field: address_1
+ *               status: 400
+ *             Empty city:
+ *               code: USR_02
+ *               message: City can't be blank
+ *               field: city
+ *               status: 400
+ *             Empty region:
+ *               code: USR_02
+ *               message: Region can't be blank
+ *               field: region
+ *               status: 400
+ *             Empty postal code:
+ *               code: USR_02
+ *               message: Postal code can't be blank
+ *               field: postal_code
+ *               status: 400
+ *             Empty country:
+ *               code: USR_02
+ *               message: Country can't be blank
+ *               field: country
+ *               status: 400
+ *             Empty shipping region id:
+ *               code: USR_02
+ *               message: Shipping region id can't be blank
+ *               field: shipping_region_id
+ *               status: 400
+ *             Invalid shipping region id:
+ *               code: USR_03
+ *               message: Shipping region id is not a number
+ *               field: shipping_region_id
+ *               status: 400
+ */
 router.put('/address', [upload.none(), authMiddleware.verifyToken], customerController.updateCustomerAddress);
 
-/* Update credit card */
+
+/**
+ * Update credit card
+ *
+ *
+ * @swagger
+ * paths:
+ *   /customers/creditCard:
+ *     put:
+ *       summary: Update credit card
+ *       description: Update credit card
+ *       tags: [customers]
+ *       produces:
+ *         - application/json
+ *       security:
+ *         - ApiKeyAuth: []
+ *       requestBody:
+ *         required: true
+ *         content:
+ *           application/x-www-form-urlencoded:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 credit_card:
+ *                   description: Credit Card
+ *                   type: string
+ *               required:
+ *                 - credit_card
+ *       responses:
+ *         200:
+ *           description: Return a Customer object
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Customer'
+ *         400:
+ *           description: Returns an error object
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Error'
+ *           examples:
+ *             User Key empty:
+ *               status: 401
+ *               code: AUT_01
+ *               message: Authorization code is empty.
+ *             User Key invalid:
+ *               status: 401
+ *               code: AUT_02
+ *               message: Access Unauthorized.
+ *             Empty credit card:
+ *               code: USR_02
+ *               message: Credit card can't be blank
+ *               field: credit_card
+ *               status: 400
+ */
 router.put('/creditCard', [authMiddleware.verifyToken], customerController.updateCustomerCreditCard);
 
 

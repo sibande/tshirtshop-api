@@ -1,4 +1,4 @@
-# www.themba.xyz/v1/docs
+# www.themba.xyz/v1/docs/
 
 ## Tests
 
@@ -7,7 +7,7 @@
 
 ## Docs
 
-www.themba.xyz/v1/docs
+www.themba.xyz/v1/docs/
 
 ## Libraries
 - express

@@ -13,7 +13,7 @@ exports.createCharge = function(req, res) {
 
   StripePayment.chargeOrder(
     req.body.order_id, req.body.stripeToken, req.body.amount,
-    req.body.description, req.body.currency).then(function(data) {
+    req.body.description, req.body.currency, req.customerData.email).then(function(data) {
       response.sendResponse(data, req, res);
     });
 };

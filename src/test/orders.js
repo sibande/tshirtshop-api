@@ -53,7 +53,7 @@ describe("Orders", () => {
             .end((err, res) => {
 	      assert.equal(res.status, 400, 'respond with status 400 when the cart id field is empty');
 	      assert.equal(res.body.field, 'cart_id', 'display failed field');
-	      assert.equal(res.body.code, 'USR_02', 'USR_02 code for a required order field');
+	      assert.equal(res.body.code, 'ORD_02', 'ORD_02 code for a required order field');
 
               done();
             });
@@ -75,7 +75,7 @@ describe("Orders", () => {
             .end((err, res) => {
 	      assert.equal(res.status, 400, 'respond with status 400 when the shipping id field is empty');
 	      assert.equal(res.body.field, 'shipping_id', 'display failed field');
-	      assert.equal(res.body.code, 'USR_02', 'USR_02 code for a required order field');
+	      assert.equal(res.body.code, 'ORD_02', 'ORD_02 code for a required order field');
 
               done();
             });
@@ -98,7 +98,7 @@ describe("Orders", () => {
             .end((err, res) => {
 	      assert.equal(res.status, 400, 'respond with status 400 when the shipping id field is invalid');
 	      assert.equal(res.body.field, 'shipping_id', 'display failed field');
-	      assert.equal(res.body.code, 'USR_03', 'USR_03 code for an invalid order field');
+	      assert.equal(res.body.code, 'ORD_03', 'ORD_03 code for an invalid order field');
 
               done();
             });
@@ -121,7 +121,7 @@ describe("Orders", () => {
             .end((err, res) => {
 	      assert.equal(res.status, 400, 'respond with status 400 when the tax id field is empty');
 	      assert.equal(res.body.field, 'tax_id', 'display failed field');
-	      assert.equal(res.body.code, 'USR_02', 'USR_02 code for a required order field');
+	      assert.equal(res.body.code, 'ORD_02', 'ORD_02 code for a required order field');
 
               done();
             });
@@ -143,7 +143,7 @@ describe("Orders", () => {
             .end((err, res) => {
 	      assert.equal(res.status, 400, 'respond with status 400 when the tax id field is invalid');
 	      assert.equal(res.body.field, 'tax_id', 'display failed field');
-	      assert.equal(res.body.code, 'USR_03', 'USR_03 code for an invalid order field');
+	      assert.equal(res.body.code, 'ORD_03', 'ORD_03 code for an invalid order field');
 
               done();
             });

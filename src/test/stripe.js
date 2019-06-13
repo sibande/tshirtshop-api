@@ -28,7 +28,7 @@ describe("Stripe", () => {
           .end((err, res) => {
 	    assert.equal(res.status, 400, 'respond with status 400 when the stripe token field is empty');
 	    assert.equal(res.body.field, 'stripeToken', 'display failed field');
-	    assert.equal(res.body.code, 'USR_02', 'USR_02 code for a required stripe field');
+	    assert.equal(res.body.code, 'STP_02', 'STP_02 code for a required stripe field');
 
             done();
           });
@@ -51,7 +51,7 @@ describe("Stripe", () => {
           .end((err, res) => {
 	    assert.equal(res.status, 400, 'respond with status 400 when the order id field is empty');
 	    assert.equal(res.body.field, 'order_id', 'display failed field');
-	    assert.equal(res.body.code, 'USR_02', 'USR_02 code for a required stripe field');
+	    assert.equal(res.body.code, 'STP_02', 'STP_02 code for a required stripe field');
 
             done();
           });
@@ -74,7 +74,7 @@ describe("Stripe", () => {
           .end((err, res) => {
 	    assert.equal(res.status, 400, 'respond with status 400 when the order id field is invalid');
 	    assert.equal(res.body.field, 'order_id', 'display failed field');
-	    assert.equal(res.body.code, 'USR_03', 'USR_03 code for a required stripe field');
+	    assert.equal(res.body.code, 'STP_03', 'STP_03 code for a required stripe field');
 
             done();
           });
@@ -97,7 +97,7 @@ describe("Stripe", () => {
           .end((err, res) => {
 	    assert.equal(res.status, 400, 'respond with status 400 when the description field is empty');
 	    assert.equal(res.body.field, 'description', 'display failed field');
-	    assert.equal(res.body.code, 'USR_02', 'USR_02 code for a required stripe field');
+	    assert.equal(res.body.code, 'STP_02', 'STP_02 code for a required stripe field');
 
             done();
           });
@@ -120,7 +120,7 @@ describe("Stripe", () => {
           .end((err, res) => {
 	    assert.equal(res.status, 400, 'respond with status 400 when the amount field is empty');
 	    assert.equal(res.body.field, 'amount', 'display failed field');
-	    assert.equal(res.body.code, 'USR_02', 'USR_02 code for a required stripe field');
+	    assert.equal(res.body.code, 'STP_02', 'STP_02 code for a required stripe field');
 
             done();
           });
@@ -142,7 +142,7 @@ describe("Stripe", () => {
           .end((err, res) => {
 	    assert.equal(res.status, 400, 'respond with status 400 when the amount field is invalid');
 	    assert.equal(res.body.field, 'amount', 'display failed field');
-	    assert.equal(res.body.code, 'USR_03', 'USR_03 code for an invalid stripe field');
+	    assert.equal(res.body.code, 'STP_03', 'STP_03 code for an invalid stripe field');
 
             done();
           });

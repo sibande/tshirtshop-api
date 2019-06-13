@@ -5,7 +5,7 @@ var forms = require('../forms/forms');
 
 /* Update a customer */
 exports.updateCustomer = function(req, res) {
-  var error = forms.validateForm(forms.customerConstraints, req.body);
+  var error = forms.validateForm(forms.customerConstraints, req.body, 'USR');
 
   if (error !== false) {
     return response.sendErrorResponse(error, req, res);
@@ -33,7 +33,7 @@ exports.getCustomer = function(req, res) {
 
 /* Register a Customer */
 exports.registerCustomer = function(req, res) {
-  var error = forms.validateForm(forms.registerConstraints, req.body);
+  var error = forms.validateForm(forms.registerConstraints, req.body, 'USR');
 
   if (error !== false) {
     return response.sendErrorResponse(error, req, res);
@@ -46,7 +46,7 @@ exports.registerCustomer = function(req, res) {
 
 /* Sign in in the Shopping. */
 exports.loginCustomer = function(req, res) {
-  var error = forms.validateForm(forms.loginConstraints, req.body);
+  var error = forms.validateForm(forms.loginConstraints, req.body, 'USR');
 
   if (error !== false) {
     return response.sendErrorResponse(error, req, res);
@@ -59,7 +59,7 @@ exports.loginCustomer = function(req, res) {
 
 /* Sign in with a facebook login token. */
 exports.facebookLoginCustomer = function(req, res) {
-  var error = forms.validateForm(forms.facebookLoginConstraints, req.body);
+  var error = forms.validateForm(forms.facebookLoginConstraints, req.body, 'USR');
 
   if (error !== false) {
     return response.sendErrorResponse(error, req, res);
@@ -72,7 +72,7 @@ exports.facebookLoginCustomer = function(req, res) {
 
 /* Update the address from customer */
 exports.updateCustomerAddress = function(req, res) {
-  var error = forms.validateForm(forms.addressConstraints, req.body);
+  var error = forms.validateForm(forms.addressConstraints, req.body, 'USR');
 
   if (error !== false) {
     return response.sendErrorResponse(error, req, res);
@@ -94,7 +94,7 @@ exports.updateCustomerAddress = function(req, res) {
 
 /* Update credit card */
 exports.updateCustomerCreditCard = function(req, res) {
-  var error = forms.validateForm(forms.creditCardConstraints, req.body);
+  var error = forms.validateForm(forms.creditCardConstraints, req.body, 'USR');
 
   if (error !== false) {
     return response.sendErrorResponse(error, req, res);

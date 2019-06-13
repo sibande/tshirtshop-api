@@ -4,7 +4,7 @@ var forms = require('../forms/forms');
 
 /* Create a Order */
 exports.createOrder = function(req, res) {
-  var error = forms.validateForm(forms.orderConstraints, req.body);
+  var error = forms.validateForm(forms.orderConstraints, req.body, 'ORD');
 
   if (error !== false) {
     return response.sendErrorResponse(error, req, res);

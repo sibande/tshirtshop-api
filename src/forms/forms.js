@@ -120,6 +120,30 @@ var orderConstraints = {
 exports.orderConstraints = orderConstraints;
 
 
+var cartConstraints = {
+  cart_id: {
+    presence: {allowEmpty: false}
+  },
+  product_id: {
+    presence: {allowEmpty: false},
+    numericality: {onlyInteger: true}
+  },
+  attributes: {
+    presence: {allowEmpty: false}
+  }
+};
+exports.cartConstraints = cartConstraints;
+
+
+var updateItemConstraints = {
+  quantity: {
+    presence: {allowEmpty: false},
+    numericality: {onlyInteger: true}
+  }
+};
+exports.updateItemConstraints = updateItemConstraints;
+
+
 var stripeConstraints = {
   stripeToken: {
     presence: {allowEmpty: false}
@@ -139,15 +163,16 @@ var stripeConstraints = {
 exports.stripeConstraints = stripeConstraints;
 
 
-function validateForm(constraints, data) {
+function validateForm(constraints, data, section) {
   var errors = validate(data, constraints, {format: "detailed"});
 
+  section = section || 'GEN';
 
   if (errors) {
     var error = errors[0];
 
     var errorResponse = {
-      code: error.validator == 'presence' ? 'USR_02' : 'USR_03',
+      code: error.validator == 'presence' ? section + '_02' : section + '_03',
       message: error.error,
       field: error.attribute,
       status: 400

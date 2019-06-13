@@ -5,7 +5,7 @@ var forms = require('../forms/forms');
 
 /* This method receive a front-end payment and create a chage. */
 exports.createCharge = function(req, res) {
-  var error = forms.validateForm(forms.stripeConstraints, req.body);
+  var error = forms.validateForm(forms.stripeConstraints, req.body, 'STP');
 
   if (error !== false) {
     return response.sendErrorResponse(error, req, res);

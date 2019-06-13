@@ -4,6 +4,33 @@ var router = express.Router();
 var productController = require('../controllers/productController');
 
 
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Product:
+ *       properties:
+ *         product_id:
+ *           type: integer
+ *           example: 10
+ *         name:
+ *           type: string
+ *           example: Haute Couture
+ *         description:
+ *           type: string
+ *           example: This stamp publicized the dress making industry. Use it to celebrate the T-shirt industry!
+ *         price:
+ *           type: string
+ *           example: "15.99"
+ *         discounted_price:
+ *           type: string
+ *           example: "14.95"
+ *         thumbnail:
+ *           type: string
+ *           example: haute-couture-thumbnail.gif
+ */
+
+
 /* Get All Products */
 router.get('/', productController.getProducts);
 

@@ -94,3 +94,9 @@ app.use(function(err, req, res, next) {
 });
 
 module.exports = app;
+
+var port = 3000;
+var server = app.listen(port, () => {
+  console.log(`Listening on http://localhost:${port}`);
+});
+

@@ -229,6 +229,41 @@ BEGIN
 END$$
 
 
+-- Create orders_get_order_short_details stored procedure
+DROP PROCEDURE IF EXISTS orders_get_order_short_details $$
+
+CREATE PROCEDURE orders_get_order_short_details(IN inOrderId INT)
+BEGIN
+  SELECT      o.order_id, o.total_amount, o.created_on,
+              o.shipped_on, o.status, c.name, c.customer_id
+  FROM        orders o
+  INNER JOIN  customer c
+                ON o.customer_id = c.customer_id
+  WHERE       o.order_id = inOrderId;
+END$$
+
+
+-- Create orders_get_order_info stored procedure
+DROP PROCEDURE IF EXISTS orders_get_order_info $$
+
+CREATE PROCEDURE orders_get_order_info(IN inOrderId INT)
+BEGIN
+  SELECT     o.order_id, o.total_amount, o.created_on, o.shipped_on,
+             o.status, o.comments, o.customer_id, o.auth_code,
+             o.reference, o.shipping_id, s.shipping_type, s.shipping_cost,
+             o.tax_id, t.tax_type, t.tax_percentage, c.customer_id
+  FROM       orders o
+  INNER JOIN  customer c
+               ON o.customer_id = c.customer_id
+  INNER JOIN tax t
+               ON t.tax_id = o.tax_id
+  INNER JOIN shipping s
+               ON s.shipping_id = o.shipping_id
+  WHERE      o.order_id = inOrderId;
+END$$
+
+
+
 -- Create shopping_cart_get_saved_products stored procedure
 DROP PROCEDURE IF EXISTS shopping_cart_get_saved_products $$
 

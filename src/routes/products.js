@@ -267,8 +267,6 @@ router.get('/search', productController.searchProducts);
  *       tags: [products]
  *       produces:
  *         - application/json
- *       security:
- *         - ApiKeyAuth: []
  *       parameters:
  *         - in: path
  *           name: product_id
@@ -416,8 +414,6 @@ router.get('/inDepartment/:department_id([0-9]+)', productController.getDepartme
  *       tags: [products]
  *       produces:
  *         - application/json
- *       security:
- *         - ApiKeyAuth: []
  *       parameters:
  *         - in: path
  *           name: product_id

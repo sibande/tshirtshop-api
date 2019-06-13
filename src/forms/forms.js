@@ -135,6 +135,21 @@ var cartConstraints = {
 exports.cartConstraints = cartConstraints;
 
 
+var reviewConstraints = {
+  product_id: {
+    presence: {allowEmpty: false}
+  },
+  review: {
+    presence: {allowEmpty: false}
+  },
+  rating: {
+    presence: {allowEmpty: false},
+    numericality: {onlyInteger: true}
+  }
+};
+exports.reviewConstraints = reviewConstraints;
+
+
 var updateItemConstraints = {
   quantity: {
     presence: {allowEmpty: false},
@@ -142,6 +157,14 @@ var updateItemConstraints = {
   }
 };
 exports.updateItemConstraints = updateItemConstraints;
+
+
+var searchConstraints = {
+  query_string: {
+    presence: {allowEmpty: false}
+  }
+};
+exports.searchConstraints = searchConstraints;
 
 
 var stripeConstraints = {

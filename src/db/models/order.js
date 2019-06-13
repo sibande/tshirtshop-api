@@ -30,12 +30,20 @@ exports.createOrder = function(customerId, cartId, shippingId, taxId) {
     });
 };
 
-exports.getOrderInfo = function(orderId) {
-  // FIXME check ownership of order
+exports.getOrderInfo = function(orderId, customerId) {
   return db.knex.raw(
     'CALL orders_get_order_info(?);', [orderId]).then(function(data) {
-      data = data[0][0];
-      return data[0];
+      data = data[0][0][0];
+      if (data.customer_id != customerId) {
+	return {
+	  error: {
+	    status: 403,
+	    code: 'ORD_03',
+	    message: 'Access denied'
+	  }
+	};
+      }
+      return data;
     }).catch(function(reason) {
       return {
 	error: {
@@ -63,12 +71,20 @@ exports.getCustomerOrders = function(customerId) {
     });
 };
 
-exports.getOrderDetails = function(orderId) {
-  // FIXME check ownership of order
+exports.getOrderDetails = function(orderId, customerId) {
   return db.knex.raw(
     'CALL orders_get_order_short_details(?);', [orderId]).then(function(data) {
-      data = data[0][0];
-      return data[0];
+      data = data[0][0][0];
+      if (data.customer_id != customerId) {
+	return {
+	  error: {
+	    status: 403,
+	    code: 'ORD_03',
+	    message: 'Access denied'
+	  }
+	};
+      }
+      return data;
     }).catch(function(reason) {
       return {
 	error: {

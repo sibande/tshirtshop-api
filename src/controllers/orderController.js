@@ -18,7 +18,7 @@ exports.createOrder = function(req, res) {
 
 /* Get Info about Order */
 exports.getOrderInfo = function(req, res) {
-  Order.getOrderInfo(req.params.order_id).then(function(data) {
+  Order.getOrderInfo(req.params.order_id, req.customerData.id).then(function(data) {
     response.sendResponse(data, req, res);
   });
 };
@@ -32,7 +32,7 @@ exports.getCustomerOrders = function(req, res) {
 
 /* Get Info about Order */
 exports.getOrderDetails = function(req, res) {
-  Order.getOrderDetails(req.params.orderId).then(function(data) {
+  Order.getOrderDetails(req.params.orderId, req.customerData.id).then(function(data) {
     response.sendResponse(data, req, res);
   });
 };

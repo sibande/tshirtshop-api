@@ -195,6 +195,17 @@ router.post('/', [upload.none(), authMiddleware.verifyToken], orderController.cr
  *               status: 401
  *               code: AUT_02
  *               message: Access Unauthorized.
+ *         403:
+ *           description: Returns an error object
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Error'
+ *           examples:
+ *             User Key empty:
+ *               status: 403
+ *               code: ORD_03
+ *               message: Access denied
  */
 router.get('/:order_id([0-9]+)', [authMiddleware.verifyToken], orderController.getOrderInfo);
 
@@ -300,6 +311,17 @@ router.get('/inCustomer', [authMiddleware.verifyToken], orderController.getCusto
  *               status: 401
  *               code: AUT_02
  *               message: Access Unauthorized.
+ *         403:
+ *           description: Returns an error object
+ *           content:
+ *             application/json:
+ *               schema:
+ *                 $ref: '#/components/schemas/Error'
+ *           examples:
+ *             User Key empty:
+ *               status: 403
+ *               code: ORD_03
+ *               message: Access denied
  */
 router.get('/shortDetail/:orderId([0-9]+)', [authMiddleware.verifyToken], orderController.getOrderDetails);
 

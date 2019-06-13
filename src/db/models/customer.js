@@ -111,7 +111,7 @@ function _registerCustomer(name, email, password) {
 	return exports.getCustomerInfoById(data.customer_id).then(function(data) {
 	  var mailData = {
 	    from: process.env.FROM_EMAIL_ADDRESS,
-	    to: 'me@sibande.com',
+	    to: data.email,
 	    subject: 'Your account has been created',
 	    text: 'Your account has been created'
 	  };

@@ -11,7 +11,8 @@ exports.createOrder = function(req, res) {
   }
 
   Order.createOrder(
-    req.customerData.id, req.body.cart_id, req.body.shipping_id, req.body.tax_id).then(function(data) {
+    req.customerData.id, req.body.cart_id, req.body.shipping_id, req.body.tax_id,
+    req.customerData.email).then(function(data) {
       response.sendResponse(data, req, res);
   });
 };

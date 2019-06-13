@@ -4,13 +4,13 @@ var fetch = require('node-fetch');
 var db = require('../index');
 var mg = mailgun({apiKey: process.env.MAILGUN_API_KEY, domain: process.env.MAILGUN_DOMAIN});
 
-exports.createOrder = function(customerId, cartId, shippingId, taxId) {
+exports.createOrder = function(customerId, cartId, shippingId, taxId, email) {
   return db.knex.raw(
     'CALL shopping_cart_create_order(?, ?, ?, ?);',
     [cartId, customerId, shippingId, taxId]).then(function(data) {
       var mailData = {
 	from: process.env.FROM_EMAIL_ADDRESS,
-	to: 'me@sibande.com',
+	to: email,
 	subject: 'Order successfully placed',
 	text: 'Your order has been successfully placed and will be dispatched soon as we receive payment.'
       };
